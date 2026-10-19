@@ -1,50 +1,92 @@
-# 回声 · AI 用户反馈分析与改进工作台
+# 回声 Echo
 
-面向产品与运营团队的开源反馈工作台：将原始反馈转成可核对的证据、信息缺口、待验证假设与改进事项。
+AI 辅助的用户反馈分析与改进工作台。整理原始反馈、核对分析依据、保存人工判断，并跟踪后续行动。
 
-[在线演示](https://xxx123ing.github.io/echo-feedback-workbench/) · [源码仓库](https://github.com/xxx123ing/echo-feedback-workbench)
+[在线体验](https://xxx123ing.github.io/echo-feedback-workbench/) · [问题反馈](https://github.com/xxx123ing/echo-feedback-workbench/issues)
 
-## 项目导航
-1. 阅读 [设计与评测说明](DESIGN.md)：问题、设计和失败迭代。
-2. 运行公开演示，查看 E01、E04、E07 的 AI 历史版本；样本均为构造数据，预录结果不冒充实时生成。
-3. 查看 [评测对比](docs/comparison-v2-v3.md) 和 [结构化输出复测](docs/report-v4.md)。
+## 功能
 
-## 快速运行（Node.js 22.12+）
+- 项目管理：支持 App 体验、活动反馈和内容复盘。
+- 反馈处理：录入、分类、合并并保留原始材料。
+- AI 分析：提取原文依据、信息缺口与待验证假设。
+- 人工审核：编辑判断卡，查看分析历史和版本差异。
+- 改进跟踪：将下一步行动加入待办，记录后续处理。
+- 数据保存：演示模式支持浏览器本地保存及 JSON 导出。
+
+## 快速开始
+
+需要 Node.js 22.12 或更高版本。
+
 ```sh
+git clone https://github.com/xxx123ing/echo-feedback-workbench.git
+cd echo-feedback-workbench
 npm ci
-npm test
 npm run build:demo
 npm run preview
 ```
-打开终端显示的地址。演示复用实际React界面，浏览器本地存储替代后端；可查看历史、编辑判断和创建改进项。保存后的修改刷新仍保留；不跨设备同步，清除网站数据会删除本地记录，请使用“导出项目记录”备份。不需要密钥、不发送用户输入。
 
-## 本地真实API模式
-复制 `.env.example` 为 `.env.local`，在本地填写自己的 DeepSeek 密钥。两个终端分别运行 `npm run server` 与 `npm run dev`。接口只监听本机，AI调用会产生个人用量。公开仓库没有密钥、公司数据或原始账号配置。
+打开终端显示的本地地址。演示模式使用示例反馈和历史 AI 分析结果，无需 API 密钥，不会实时调用模型。已保存的数据保留在当前浏览器，清除网站数据会删除记录；可通过“导出项目记录”备份。
 
-## 实现范围
-已实现：三类项目、反馈录入、人工分类/合并、判断卡、改进记录、AI结构化分析、原文核验、版本对比。
-未实现：自动聚类、自动竞品研究、多用户权限、生产部署。语义正确性仍需人工审核。
+## 配置 AI 分析
 
-## 开发与第三方集成
-本工作台独立开发，使用Codex辅助编码。原型曾连接独立运行的 [Formbricks](https://github.com/formbricks/formbricks) 收集问卷，没有修改其核心源码；公开版移除私人数据库连接器，保留映射逻辑和自有表单。没有打包Formbricks代码或企业版功能。
-评测为构造样本的AI辅助审阅，不是独立人工盲评或商业增长效果。
+将 `.env.example` 复制为 `.env.local`，填写自己的 `DEEPSEEK_API_KEY` 和模型名称。不要提交密钥文件。
 
-## 发布演示
-GitHub Pages 使用静态文件，不承载本项目的Node后端。仓库Settings → Pages → Source选择GitHub Actions，运行Pages工作流即可发布不含密钥的演示。
+在两个终端分别运行：
 
-## 许可
-本仓库自有代码使用MIT许可；依赖按各自许可分发，见 [第三方说明](THIRD_PARTY_NOTICES.md)。Formbricks独立项目不受本仓库MIT许可覆盖。
+```sh
+npm run server
+```
 
-## 演示截图
+```sh
+npm run dev
+```
 
-![版本对比](docs/demo.png)
+本地 API 模式会将待分析内容发送至配置的模型服务，并产生相应用量。服务默认只监听本机。
 
+## 开发与测试
 
+```sh
+npm test
+npm run build:demo
+```
+
+主要目录：
+
+| 目录 | 内容 |
+| --- | --- |
+| `src/` | React 界面、项目流程与演示数据 |
+| `server/` | 本地 API、存储与 AI 分析校验 |
+| `tests/` | 流程、持久化与输出校验测试 |
+| `docs/` | 使用说明、评测记录与发布说明 |
+
+## 使用说明
+
+1. 选择项目并录入反馈。
+2. 查看原始材料及分析结果。
+3. 编辑“是什么、为什么这样判断、下一步怎么做”并保存。
+4. 建立改进事项，记录后续处理情况。
+5. 按需导出项目记录。
+
+AI 分析需要人工核对。引用匹配不代表语义判断正确。当前不支持多用户权限或跨设备同步。
+
+## 部署
+
+仓库提供 GitHub Pages 工作流。在仓库 **Settings → Pages** 中选择 **GitHub Actions**，推送至 `main` 后运行测试、构建与部署。Pages 仅提供静态演示，不承载 Node.js 后端。
 
 ## 文档
-- [设计与评测说明](DESIGN.md)
-- [三分钟演示稿](docs/DEMO_GUIDE.md)
-- [发布验收与边界](docs/RELEASE.md)
-- [项目介绍](docs/overview.html)
 
-公开演示仅支持本机浏览器保存，不承诺未保存输入、跨设备同步或云端备份。建议展示前保存判断并导出项目记录。
+- [使用指南](docs/DEMO_GUIDE.md)
+- [设计说明](DESIGN.md)
+- [版本评测](docs/comparison-v2-v3.md)
+- [结构化输出验证](docs/report-v4.md)
+- [发布记录](docs/RELEASE.md)
+
+评测使用构造案例及 AI 辅助审阅；测试结果不等同于真实场景准确率。
+
+## 参与贡献
+
+欢迎通过 Issues 报告问题或提出建议，通过 Pull Request 提交修改。报告问题时请提供复现步骤、运行环境及预期结果，避免上传密钥或私人反馈。
+
+## 许可证与第三方说明
+
+项目采用 [MIT License](LICENSE)，依赖遵循各自许可证。开发使用 Codex 辅助。早期问卷集成使用独立运行的 Formbricks，当前保留数据映射代码，不包含其源码。详见 [第三方说明](THIRD_PARTY_NOTICES.md)。
