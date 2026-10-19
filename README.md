@@ -1,9 +1,11 @@
 # 回声 · AI 用户反馈分析与改进工作台
 
-面向产品与运营的个人作品集：将原始反馈转成可核对的证据、信息缺口、待验证假设与改进事项。
+面向产品与运营团队的开源反馈工作台：将原始反馈转成可核对的证据、信息缺口、待验证假设与改进事项。
 
-## 面试官从这里开始
-1. 阅读 [三页项目说明](PORTFOLIO.md)：问题、设计和失败迭代。
+[在线演示](https://xxx123ing.github.io/echo-feedback-workbench/) · [源码仓库](https://github.com/xxx123ing/echo-feedback-workbench)
+
+## 项目导航
+1. 阅读 [设计与评测说明](DESIGN.md)：问题、设计和失败迭代。
 2. 运行公开演示，查看 E01、E04、E07 的 AI 历史版本；样本均为构造数据，预录结果不冒充实时生成。
 3. 查看 [评测对比](docs/comparison-v2-v3.md) 和 [结构化输出复测](docs/report-v4.md)。
 
@@ -23,9 +25,9 @@ npm run preview
 已实现：三类项目、反馈录入、人工分类/合并、判断卡、改进记录、AI结构化分析、原文核验、版本对比。
 未实现：自动聚类、自动竞品研究、多用户权限、生产部署。语义正确性仍需人工审核。
 
-## 开源复用与作者贡献
-本工作台独立开发，使用Codex辅助编码。原型曾连接独立运行的 [Formbricks](https://github.com/formbricks/formbricks) 收集问卷，没有修改其核心源码；公开版移除私人数据库连接器，保留映射逻辑和自有表单。没有打包Formbricks代码或企业版功能。不能称为Formbricks核心源码深度二次开发。
-产品贡献包括场景与需求拆解、审核交互、证据字段设计、评价标准及失败迭代。评测为构造样本的AI辅助审阅，不是独立人工盲评或商业增长效果。
+## 开发与第三方集成
+本工作台独立开发，使用Codex辅助编码。原型曾连接独立运行的 [Formbricks](https://github.com/formbricks/formbricks) 收集问卷，没有修改其核心源码；公开版移除私人数据库连接器，保留映射逻辑和自有表单。没有打包Formbricks代码或企业版功能。
+评测为构造样本的AI辅助审阅，不是独立人工盲评或商业增长效果。
 
 ## 发布演示
 GitHub Pages 使用静态文件，不承载本项目的Node后端。仓库Settings → Pages → Source选择GitHub Actions，运行Pages工作流即可发布不含密钥的演示。
@@ -39,10 +41,10 @@ GitHub Pages 使用静态文件，不承载本项目的Node后端。仓库Settin
 
 
 
-## 今日交付
-- [作品集案例](PORTFOLIO.md)
+## 文档
+- [设计与评测说明](DESIGN.md)
 - [三分钟演示稿](docs/DEMO_GUIDE.md)
 - [发布验收与边界](docs/RELEASE.md)
-- [可浏览的作品集页面](docs/portfolio.html)
+- [项目介绍](docs/overview.html)
 
 公开演示仅支持本机浏览器保存，不承诺未保存输入、跨设备同步或云端备份。建议展示前保存判断并导出项目记录。
