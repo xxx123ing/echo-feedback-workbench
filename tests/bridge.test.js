@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {pathToFileURL} from 'node:url';
+import {join} from 'node:path';
+import {fields,importResponses,mapResponse} from '../server/bridge.mjs';
+import {createStore} from '../server/store.mjs';
+const row={id:'test',finished:true,createdAt:'2026-10-11T10:00:00',data:{[fields.scene]:'App／网页体验',[fields.actual]:'视频切换繁琐'}};
+test('sync is idempotent and preserves human decisions and raw evidence',()=>{const s={feedback:[]};const first=importResponses(s,[row]);assert.equal(first.added,1);first.state.feedback[0].category='流程体验';first.state.feedback[0].status='已确认';const second=importResponses(first.state,[row,row]);assert.equal(second.added,0);assert.equal(second.state.feedback[0].status,'已确认');assert.deepEqual(second.state.feedback[0].rawData,row.data)});
+test('incomplete and unknown-scene submissions are not assigned to an arbitrary project',()=>{assert.equal(mapResponse({...row,finished:false}),null);assert.equal(mapResponse({...row,data:{}}),null);assert.equal(mapResponse({...row,data:{...row.data,[fields.scene]:'黑客松／项目活动'}}).projectId,'event')});
+test('file store survives reopening and serializes concurrent decisions',async()=>{const path=await mkdtemp(join(tmpdir(),'echo-store-'));const dir=pathToFileURL(path+'/');try{const s=createStore(dir);await Promise.all([s.transact(x=>({...x,logs:[...x.logs,{message:'a'}]})),s.transact(x=>({...x,logs:[...x.logs,{message:'b'}]}))]);const reopened=await createStore(dir).read();assert.equal(reopened.revision,2);assert.equal(reopened.logs.length,2);assert.equal(reopened.feedback.length,0)}finally{await rm(path,{recursive:true,force:true})}});
